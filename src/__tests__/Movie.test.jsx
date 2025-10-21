@@ -1,18 +1,27 @@
 // src/__tests__/Movie.test.jsx
 import { render, screen } from "@testing-library/react";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import routes from "../routes"; // Make sure this is not empty
-import "@testing-library/jest-dom";
+import routes from "../routes";
 
-test("renders the <NavBar /> component", async () => {
-  const id = 1;
+test("renders the <NavBar /> component on movie route", async () => {
   const router = createMemoryRouter(routes, {
-    initialEntries: [`/movie/${id}`],
-    initialIndex: 0,
+    initialEntries: ["/movie/1"],
   });
-
   render(<RouterProvider router={router} />);
+  const nav = await screen.findByRole("navigation");
+  expect(nav).toBeInTheDocument();
+});
 
-  // ✅ This will now pass, since <nav> is present
-  expect(await screen.findByRole("navigation")).toBeInTheDocument();
+test("renders movie details correctly", async () => {
+  const router = createMemoryRouter(routes, {
+    initialEntries: ["/movie/1"],
+  });
+  render(<RouterProvider router={router} />);
+  // waiting for the title (h1)
+  const title = await screen.findByRole("heading", { level: 1 });
+  expect(title.textContent).toBe("Doctor Strange");
+  const time = await screen.findByText(/\d+ min/); // e.g. "115 min"
+  expect(time).toBeInTheDocument();
+  const genreSpans = await screen.findAllByText(/(Action|Adventure|Fantasy)/i);
+  expect(genreSpans.length).toBeGreaterThan(0);
 });

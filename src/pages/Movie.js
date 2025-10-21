@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import NavBar from "../components/NavBar";
 
 function Movie() {
-  const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
     fetch(`http://localhost:4000/movies/${id}`)
@@ -15,14 +14,13 @@ function Movie() {
   if (!movie) return <p>Loading...</p>;
 
   return (
-    <>
-      <NavBar />
+    <div>
       <h1>{movie.title}</h1>
       <p>{movie.time}</p>
       {movie.genres.map((genre, index) => (
-        <span key={index}>{genre}</span>
+        <span key={index}>{genre} </span>
       ))}
-    </>
+    </div>
   );
 }
 

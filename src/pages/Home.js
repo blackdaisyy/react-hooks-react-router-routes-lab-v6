@@ -1,6 +1,5 @@
-import NavBar from "../components/NavBar";
+import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import { useEffect, useState } from "react";
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -12,13 +11,12 @@ function Home() {
   }, []);
 
   return (
-    <>
-      <NavBar />
+    <div>
       <h1>Home Page</h1>
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}
-    </>
+    </div>
   );
 }
 
